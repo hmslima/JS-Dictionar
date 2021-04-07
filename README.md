@@ -30,7 +30,7 @@ Let's see an example:
 
 _Observe that the presence of normal spaces, punctuations and special characters are permitted, they don't affect the software, only TAB spaces._
 
-3. The list of words lies inside a DIV called _"listOfWords"_. Just replace the existent list for your own list of words
+3. The list of words lies inside a DIV called _"listOfWords"_. Just replace the existing list for yours
 :
 
 .
