@@ -15,7 +15,7 @@ You don't need to be a programmer to make your onw dictionary using my software,
 1. Download the latest version of this dicionary in the [release page](https://github.com/hmslima/JS-Dictionar/releases).
 
 2. Your dictionary must be in a text file. Each line of your dicionary must be in this format: the entry, a TAB space, the definition. Let's see an example
-:
+: 
 
     [...]
     bla bla bla	yada (talking)    
