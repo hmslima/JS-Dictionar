@@ -1,3 +1,11 @@
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+<!-- Author: Henrique Matheus da Silva Lima --------------------------->
+<!-- License: MIT ----------------------------------------------------->
+<!-- Version: 1.00 ---------------------------------------------------->
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -90,6 +98,12 @@
 					search_word = "SEARCH";
 				}
 				
+				// Checks whether the input is valid
+				var valid_input = true;
+				if ((word == "") || (word == " ") || (word == "  ") || (word == "   ") || (word == "	")) {
+					valid_input = false;
+				}
+				
 				// Counter to save CPU in case of searchs that returns too many results
 				var cpu_saver = 0;
 				
@@ -106,14 +120,14 @@
 				var line = list_of_words.split("\n");
 				var entry; // I will use this variable to split the lines
 				
-				// Now we search in the word side				
+				// Now we search in the word side
 				document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'><tr><td class='js_dictionar_table_part'><b>" + result_entry_text + " \"</b>" +  word + "<b>\"</b></td></tr></table>";				
 				
 				cpu_saver = 0;
 				at_least_one_result = 0;
 				for (var count = 0; count < line.length; count++) {
 					entry = (line[count]).split("\t");
-					if (entry[1] !== undefined) {
+					if (entry[1] !== undefined && valid_input) {
 						// if (entry[0].search(word) !== -1) {
 						if ((entry[0].search(word) !== -1) || (entry[0].search(word_lower_case) !== -1) || (entry[0].search(word_upper_case) !== -1) || (entry[0].search(word_upper_case_first_letter) !== -1)) {
 							document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'>" + "<tr>" + "<td class='js_dictionar_table_part1'>" + entry[0] + "</td>" + "<td class='js_dictionar_table_part2'>" + entry[1] + "</td>" + "</tr>" + "</table>";
@@ -136,7 +150,7 @@
 				at_least_one_result = 0;
 				for (var count = 0; count < line.length; count++) {
 					entry = (line[count]).split("\t");
-					if (entry[1] !== undefined) {
+					if (entry[1] !== undefined && valid_input) {
 						// if (entry[0].search(word) === -1 && entry[1].search(word) !== -1) { // This "entry[0].search(word) === -1" is here to avoid repetitions from the previous loop
 						if (((entry[0].search(word) === -1) && (entry[0].search(word_lower_case) === -1) && (entry[0].search(word_upper_case) === -1) && (entry[0].search(word_upper_case_first_letter) === -1)) && ((entry[1].search(word) !== -1) || (entry[1].search(word_lower_case) !== -1) || (entry[1].search(word_upper_case) !== -1) || (entry[1].search(word_upper_case_first_letter) !== -1))) { // This "entry[0].search(word) === -1" is here to avoid repetitions from the previous loop
 							if (entry[1].search(word_lower_case) !== -1) {
@@ -19935,9 +19949,7 @@ zygote	zygote
 <!--------------------------------- ----------------------------------->
 			<div id="title">JS Sambahsa Dictionar</div>
 
-			<div id="version">v 1.00</div>
-		
-			<p>This is a dynamic dictionary created in JavaScript for the auxiliary language Sambahsa Mundialect</p>
+			<div id="version">v 1.01</div>
 			
 
 			<input type="text" id="inputTextArea" />
