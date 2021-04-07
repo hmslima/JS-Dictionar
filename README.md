@@ -3,6 +3,7 @@
 This is a dynamic dictionary created in JavaScript, it was initially created for the auxiliary language Sambahsa Mundialect, but you can use this project for any other language. Here are the advantages of this software:
 * It can be used online or offline _(everything is just in one HTML file)_
 * Searches are done in both ways, you don't need to create, for example, a Spanish-English dictionary and an English-Spanish one, just one version is enough
+* It works well in small screens, like the ones of a mobile phone or tablet
 * The software is very simple, so if you have a basic knowledge of web development, you can easily make your own customizations
 
 Click [here](https://hmslima.github.io/JS-Dictionar/) to test this dictionary. _This project is part of a big one, that's why I provide only the English-Sambahsa dictionary, the versions in other languages are available in the main project._
