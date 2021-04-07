@@ -11,23 +11,53 @@
 	<head>
 		<meta charset="utf-8"/>
 		<meta content="width=device-width,initial-scale=1" name="viewport"/>
+		<meta name="copyright" content="
+		MIT License
+
+		Copyright (c) Henrique Matheus da Silva Lima
+
+		Permission is hereby granted, free of charge, to any person obtaining a copy
+		of this software and associated documentation files (the 'Software'), to deal
+		in the Software without restriction, including without limitation the rights
+		to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+		copies of the Software, and to permit persons to whom the Software is
+		furnished to do so, subject to the following conditions:
+
+		The above copyright notice and this permission notice shall be included in all
+		copies or substantial portions of the Software.
+
+		THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+		IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+		FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+		AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+		LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+		OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+		SOFTWARE.
+
+		" />
 		<title>English-Sambahsa - JS Dictionar</title>
-		<!--------------------------------- ------------------------------------>
-		<!------------------------------ CSS code ------------------------------>
-		<!--------------------------------- ------------------------------------>
+		<!--------------------------------- ----------------------------------->
+		<!------------------------------ CSS code ----------------------------->
+		<!--------------------------------- ----------------------------------->
 		<style>
 			body {background-color: #8E9150;}
 			p {text-indent: 30px; text-align: justify; line-height: 30px;}
+			a:link{text-decoration:none; font-weight:bold;}
+			a:visited{text-decoration:none; font-weight:bold;}
+			a:hover{text-decoration:none; font-weight:bold;}
+			a:active{text-decoration:none; font-weight:bold;}
 			.box {background-color: #FBFBE7; width: 50%; margin: auto; margin-bottom: 10px; padding: 10px 20px;}
 			.code {background-color: #281818; color: #00FF26; padding: 3px; font-size: 0.8em;}
-			.js_dictionar_table {width: 100%;}
-			.js_dictionar_table_part {border: 1px solid black; padding-left: 5px; padding-right: 5px;}
-			.js_dictionar_table_part1 {border: 1px solid black; padding-left: 5px; padding-right: 5px; width: 20%;}
-			.js_dictionar_table_part2 {border: 1px solid black; padding-left: 5px; padding-right: 5px;}
+			.js_dictionar_table {width: 100%; border-collapse: collapse;}
+			.js_dictionar_table_part {background-color: #D6D3D3; border: 1px solid black; padding-left: 5px; padding-right: 5px; font-weight: normal;}
+			.js_dictionar_table_part_noresult {background-color: #F1F2DE; border: 1px solid black; padding-left: 5px; padding-right: 5px; font-weight: normal;}
+			.js_dictionar_table_part1 {background-color: #CECFB0; border: 1px solid black; padding-left: 5px; padding-right: 5px; width: 20%;}
+			.js_dictionar_table_part2 {background-color: #F1F2DE; border: 1px solid black; padding-left: 5px; padding-right: 5px;}
 			.highlight {text-decoration: underline; font-weight: bold;}
 			#title {font-size: 1.5em; font-weight: bold; text-align: center;}
 			#version {font-size: 0.9em; font-weight: bold; font-style: italic; text-align: center;}
-			#inputTextArea {display: inline-block; width: 80%; text-align: left;}
+			#inputTextArea {display: inline-block; width: 60%; text-align: left;}
+			#buttonDictionar {margin-right: 5px; display: inline;}
 			#listOfWords {display: none;}
 			#result {display: none;}
 			
@@ -43,9 +73,9 @@
 			}
 		</style>
 		
-		<!--------------------------------- ------------------------------------>
-		<!-------------------------- JavaScript code --------------------------->
-		<!--------------------------------- ------------------------------------>
+		<!--------------------------------- ----------------------------------->
+		<!-------------------------- JavaScript code -------------------------->
+		<!--------------------------------- ----------------------------------->
 		
 		<script type="text/javascript">
 			function startSbSearch (source_of_words, input_div, output_div, lang) {
@@ -110,6 +140,9 @@
 				// To count whether at least one result was found
 				var at_least_one_result = 0;
 				
+				// Define the maximum number of results
+				var MAX_RESULTS = 100;
+				
 				// Cleaning the result DIV for new searchs
 				document.getElementById(output_div).innerHTML = "";
 				
@@ -121,7 +154,7 @@
 				var entry; // I will use this variable to split the lines
 				
 				// Now we search in the word side
-				document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'><tr><td class='js_dictionar_table_part'><b>" + result_entry_text + " \"</b>" +  word + "<b>\"</b></td></tr></table>";				
+				document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + result_entry_text + " \"</b>" +  word + "<b>\"</b></th></tr></table>";				
 				
 				cpu_saver = 0;
 				at_least_one_result = 0;
@@ -133,18 +166,18 @@
 							document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'>" + "<tr>" + "<td class='js_dictionar_table_part1'>" + entry[0] + "</td>" + "<td class='js_dictionar_table_part2'>" + entry[1] + "</td>" + "</tr>" + "</table>";
 							cpu_saver++;
 							at_least_one_result++;
-							if (cpu_saver >= 150) {
+							if (cpu_saver >= MAX_RESULTS) {
 								count = line.length;
 							}
 						}
 					}
 				}
 				if (at_least_one_result == 0) {
-					document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'><tr><td class='js_dictionar_table_part'><i>" + no_result + "</i></td></tr></table>";
+					document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'><tr><td class='js_dictionar_table_part_noresult'><i>" + no_result + "</i></td></tr></table>";
 				}
 				
 				// And then in the definition side
-				document.getElementById(output_div).innerHTML += "<br><table class='js_dictionar_table'><tr><td class='js_dictionar_table_part'><b>" + result_definition_text + " \"</b>" +  word + "<b>\"</b></td></tr></table>";				
+				document.getElementById(output_div).innerHTML += "<br><table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + result_definition_text + " \"</b>" +  word + "<b>\"</b></th></tr></table>";				
 				
 				cpu_saver = 0;
 				at_least_one_result = 0;
@@ -173,14 +206,14 @@
 							document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'>" + "<tr>" + "<td class='js_dictionar_table_part1'>" + entry[0] + "</td>" + "<td class='js_dictionar_table_part2'>" + highlighted_text + "</td>" + "</tr>" + "</table>";
 							cpu_saver++;
 							at_least_one_result++;
-							if (cpu_saver >= 150) {
+							if (cpu_saver >= MAX_RESULTS) {
 								count = line.length;
 							}
 						}
 					}
 				}
 				if (at_least_one_result == 0) {
-					document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'><tr><td class='js_dictionar_table_part'><i>" + no_result + "</i></td></tr></table>";
+					document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'><tr><td class='js_dictionar_table_part_noresult'><i>" + no_result + "</i></td></tr></table>";
 				}
 				
 				document.getElementById(output_div).style.display = "block";
@@ -189,15 +222,15 @@
 	</head>
 	<body>
 		<div class="box">
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
 <div id="listOfWords">
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
 à la	à la 
 AAA dienchi	triple-A battery   
 ab	by (agent; can turn to “af” before “h”); ab- (verbal prefix) = away, off 
@@ -2385,7 +2418,7 @@ bombe	bomb (sb)
 bomber	bomber (sb) 
 bombyx	silkworm ( sb) 
 bona fide	good faith ( sf ) 
-bonadministration	good management/administration   (ka contrar os "maladministration")
+bonadministration	good management/administration (ka contrar os "maladministration")
 bonbon	(boiled) sweet, candy 
 bond	coupon, voucher 
 bond papier	bond paper   
@@ -19938,22 +19971,24 @@ zwaugean	sitting meditation (sf )
 zwaujece	setback (sb) ( defeat ) 
 zwayako	suppository ( sf ) 
 zygote	zygote
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
+<!--------------------------------- ----------------------------------->
 </div>
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
-<!--------------------------------- ----------------------------------->
-			<div id="title">JS Sambahsa Dictionar</div>
+			<div id="title">English-Sambahsa Dictionary</div>
 
-			<div id="version">v 1.01</div>
-			
+			<div id="version">JS-Dictionar – v 1.02</div>
+
+			<br>
 
 			<input type="text" id="inputTextArea" />
-			<input type="button" id="buttonDictionar" value="»»" onclick="startSbSearch ('listOfWords', 'inputTextArea', 'result', 99);" style="margin-right: 20px; display: inline;" />
+			<input type="button" id="buttonDictionar" value="»»" onclick="startSbSearch ('listOfWords', 'inputTextArea', 'result', 99);" />
+			<a href="index.html" download><input type="button" id="buttonDictionar" value="⬇"/></a>
 
 			<script>
 				var inputButton = document.getElementById("inputTextArea");
