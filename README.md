@@ -2,9 +2,9 @@
 
 This is a dynamic dictionary created in JavaScript, it was initially created for the auxiliary language Sambahsa Mundialect, but you can use this project for any other language. Here are the advantages of this software:
 * It can be used online or offline _(everything is just in one HTML file)_
-* Searchs are done in both ways, you don't need to create, for example, a Spanish-English dictionary and a English-Spanish one, just one version is enough
+* Searchs are done in both ways, you don't need to create, for example, a Spanish-English dictionary and an English-Spanish one, just one version is enough
 * It has a very permissive license, so you don't need to worry a lot with legal things
-* The software is very simple, so if you have a basic knowledge of web development, you can easily make your onw customizations
+* The software is very simple, so if you have a basic knowledge of web development, you can easily make your own customizations
 
 Click [here](https://hmslima.github.io/JS-Dictionar/) to test this dictionary. _This project is part of a big one, that's why I provide only the English-Sambahsa dictionary, the versions in other languages are available in the main project._
 
@@ -12,7 +12,7 @@ Click [here](https://hmslima.github.io/JS-Dictionar/) to test this dictionary. _
 
 You don't need to be a programmer to make your own dictionary by using my software, but a very basic knowledge of HTML and CSS would allow you to customize the dictionary.
 
-1. Download the latest version of the English-Sambahsa dicionary in the [release page](https://github.com/hmslima/JS-Dictionar/releases).
+1. Download the latest version of the English-Sambahsa dictionary in the [release page](https://github.com/hmslima/JS-Dictionar/releases).
 
 2. Your dictionary must be in a text file. Each line of your dicionary must be in this format:
 
@@ -68,7 +68,7 @@ _Observe that the presence of normal spaces, punctuations and special characters
 
 The lines `<!--------------------------------- ----------------------------------->` are there to help you to find the limits of the list.
 
-Yeah, the existent list is very big, the English-Sambahsa dictionary has more than 19,000 entries. That's why I suggest you to use a good text editor for making this replacement, I use [Geany](https://www.geany.org/), but other text editors are good too. By the way, be careful to not replace any part of the code. Let's see an example where you replace the Sambahsa-English dictionary for an English-Esperanto one. The result should be this:
+Yeah, the existing list is very big, the English-Sambahsa dictionary has more than 19,000 entries. That's why I suggest you to use a good text editor for making this replacement, I use [Geany](https://www.geany.org/), but other text editors are good too. By the way, be careful to not replace any part of the code. Let's see an example where you replace the Sambahsa-English dictionary for an English-Esperanto one. The result should be this:
 
     <div id="listOfWords">
     <!--------------------------------- ----------------------------------->
