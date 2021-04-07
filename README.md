@@ -105,4 +105,6 @@ Yeah, the existent list is very big, the English-Sambahsa dictionary has more th
 
 6. Now roll down until the bottom of the file, there you'll edit the content of the DIV `<div id="title">[...]</div>`, this title is the one that really appears in the page.
 
-7. Enjoy, if you have any question or found any technical problem, let me know in the [Issues Page](https://github.com/hmslima/JS-Dictionar/issues).
+7. If you change the name of the file, you must search the line `<a href="index.html" download><input type="button" id="buttonDictionar" value="⬇"/></a>` and replace `index.html` for the new one. Let's say that now the name of the file is `vortaro_en.html`, then this line of code must be `<a href="vortaro_en.html" download><input type="button" id="buttonDictionar" value="⬇"/></a>`. The purpose of this line is to allow people to download the dictionary for offline use.
+
+8. Enjoy, if you have any question or found any technical problem, let me know in the [Issues Page](https://github.com/hmslima/JS-Dictionar/issues).
