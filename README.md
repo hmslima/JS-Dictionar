@@ -17,6 +17,7 @@ You don't need to be a programmer to make your onw dictionary using my software,
 2. Your dictionary must be in a text file. Each line of your dicionary must be in this format: the entry, a TAB space, the definition. Let's see an example
 : 
 
+
     [...]
     bla bla bla	yada (talking)    
     blagh	bless ( vtr )    
@@ -24,6 +25,7 @@ You don't need to be a programmer to make your onw dictionary using my software,
     blaghmonium	priesthood (sb)    
     blah	blow (vtr )
     [...]
+
 
 Maybe you cannot see the TAB spaces, but they are there. See the very same list from above, but with the TAB spaces replace by a →.
 
@@ -39,6 +41,7 @@ _I am not sure if I was clear, but you cannot use the character "→" to separet
 
 3. The list of words lies inside a DIV called _"listOfWords"_. Just replace the existent list for your own list of words.
 :
+
 
     <div id="listOfWords">
     <!--------------------------------- ----------------------------------->
@@ -69,6 +72,7 @@ _I am not sure if I was clear, but you cannot use the character "→" to separet
     <!--------------------------------- ----------------------------------->
     <!--------------------------------- ----------------------------------->
     </div>
+
 
 The lines `<!--------------------------------- ----------------------------------->` are there to help you to find the limits of the list.
 
