@@ -35,6 +35,7 @@
 		SOFTWARE.
 
 		" />
+		<link rel="shortcut icon" href="jsdictionar_icon.png" type="image/x-icon">
 		<title>English-Sambahsa - JS-Dictionar</title>
 		<!--------------------------------- ----------------------------------->
 		<!------------------------------ CSS code ----------------------------->
@@ -51,7 +52,7 @@
 			.js_dictionar_table {width: 100%; border-collapse: collapse;}
 			.js_dictionar_table_part {background-color: #D6D3D3; border: 1px solid black; padding-left: 5px; padding-right: 5px; font-weight: normal;}
 			.js_dictionar_table_part_noresult {background-color: #F1F2DE; border: 1px solid black; padding-left: 5px; padding-right: 5px; font-weight: normal;}
-			.js_dictionar_table_part1 {background-color: #D8D9C5; border: 1px solid black; padding-left: 5px; padding-right: 5px; width: 20%;}
+			.js_dictionar_table_part1 {background-color: #DEDED2; border: 1px solid black; padding-left: 5px; padding-right: 5px; width: 20%;}
 			.js_dictionar_table_part2 {background-color: #F1F2DE; border: 1px solid black; padding-left: 5px; padding-right: 5px;}
 			.highlight {text-decoration: underline; font-weight: bold;}
 			#title {font-size: 1.5em; font-weight: bold; text-align: center;}
@@ -92,45 +93,51 @@
 				var no_result = "";
 				
 				if (lang == 0) { // Sambahsa
-					result_entry_text = "Resultats om entrats con";
-					result_definition_text = "Resultats om definitions con";
+					precise_search = "Precise paursk:";
+					in_the_terms = "In ia terms:";
+					in_the_definitions = "In ia istilahs:";
 					no_result = "Neid resultat";
-					search_word = "PAURSK";
 				}
 				else if (lang == 1) { // Brazilian Portuguese
-					result_entry_text = "Resultados de entradas com";
-					result_definition_text = "Resultados de definições com";
+					precise_search = "Pesquisa precisa:";
+					in_the_terms = "Nos termos:";
+					in_the_definitions = "Nas definições:";
 					no_result = "Nenhum resultado";
-					search_word = "PROCURAR";
 				}
 				else if (lang == 2) { // Spanish
-					result_entry_text = "Resultados de entradas con";
-					result_definition_text = "Resultados de definiciones con";
+					precise_search = "Búsqueda precisa:";
+					in_the_terms = "En los términos:";
+					in_the_definitions = "En las definiciones:";
 					no_result = "Sin resultados";
-					search_word = "BUSCAR";
 				}
 				else if (lang == 3) { // French
-					result_entry_text = "Résultats des entrées avec";
-					result_definition_text = "Résultats des définitions avec";
+					precise_search = "Recherche précise :";
+					in_the_terms = "Dans les termes :";
+					in_the_definitions = "Dans les définitions :";
 					no_result = "Aucun résultat";
-					search_word = "CHERCHER";
 				}
 				else if (lang == 4) { // Esperanto
-					result_entry_text = "Rezultoj de la termoj  kun";
-					result_definition_text = "Rezultoj de la difinoj  kun";
+					precise_search = "Preciza serĉo:";
+					in_the_terms = "En la termoj:";
+					in_the_definitions = "En la difinoj:";
 					no_result = "Sen rezultoj";
-					search_word = "SERĈI";
+				}
+				else if (lang == 5) { // Russian
+					precise_search = "Точный поиск:";
+					in_the_terms = "В терминов:";
+					in_the_definitions = "В определениях:";
+					no_result = "Нет результатов:";
 				}
 				else { // English
-					result_entry_text = "Results of entries with";
-					result_definition_text = "Results of definitions with";
+					precise_search = "Precise search:";
+					in_the_terms = "In the terms:";
+					in_the_definitions = "In the definitions:";
 					no_result = "No results";
-					search_word = "SEARCH";
 				}
 				
 				// Checks whether the input is valid
 				var valid_input = true;
-				if ((word == "") || (word == " ") || (word == "  ") || (word == "   ") || (word == "	")) {
+				if ((word == "") || (word == " ") || (word == "  ") || (word == "   ") || (word == "    ") || (word == "     ") || (word == "      ") || (word == "	") || (word == "		") || (word == "			")) {
 					valid_input = false;
 				}
 				
@@ -153,8 +160,10 @@
 				var line = list_of_words.split("\n");
 				var entry; // I will use this variable to split the lines
 				
-				// Now we search in the word side
-				document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + result_entry_text + " \"</b>" +  word + "<b>\"</b></th></tr></table>";				
+				/******************************************************/
+				/******************************************************/
+				// First, the search for precise words
+				document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + precise_search + "</b></th></tr></table>";				
 				
 				cpu_saver = 0;
 				at_least_one_result = 0;
@@ -162,7 +171,8 @@
 					entry = (line[count]).split("\t");
 					if (entry[1] !== undefined && valid_input) {
 						// if (entry[0].search(word) !== -1) {
-						if ((entry[0].search(word) !== -1) || (entry[0].search(word_lower_case) !== -1) || (entry[0].search(word_upper_case) !== -1) || (entry[0].search(word_upper_case_first_letter) !== -1)) {
+						if (((entry[0].search(word) !== -1) || (entry[0].search(word_lower_case) !== -1) || (entry[0].search(word_upper_case) !== -1) || (entry[0].search(word_upper_case_first_letter) !== -1)) && (word.length == entry[0].length)) {
+							
 							document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'>" + "<tr>" + "<td class='js_dictionar_table_part1'>" + entry[0] + "</td>" + "<td class='js_dictionar_table_part2'>" + entry[1] + "</td>" + "</tr>" + "</table>";
 							cpu_saver++;
 							at_least_one_result++;
@@ -176,8 +186,48 @@
 					document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'><tr><td class='js_dictionar_table_part_noresult'><i>" + no_result + "</i></td></tr></table>";
 				}
 				
+				/******************************************************/
+				/******************************************************/
+				// Now we search in the word side
+				document.getElementById(output_div).innerHTML += "<br><table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + in_the_terms + "</b></th></tr></table>";				
+				
+				cpu_saver = 0;
+				at_least_one_result = 0;
+				for (var count = 0; count < line.length; count++) {
+					entry = (line[count]).split("\t");
+					if (entry[1] !== undefined && valid_input) {
+						// if (entry[0].search(word) !== -1) {
+						if (((entry[0].search(word) !== -1) || (entry[0].search(word_lower_case) !== -1) || (entry[0].search(word_upper_case) !== -1) || (entry[0].search(word_upper_case_first_letter) !== -1)) && (word.length != entry[0].length)) {
+							if (entry[0].search(word_lower_case) !== -1) {
+								highlighted_text = entry[0].replace(word_lower_case, "<span class='highlight'>" + word_lower_case + "</span>");
+							}
+							else if (entry[0].search(word_upper_case) !== -1) {
+								highlighted_text = entry[0].replace(word_upper_case, "<span class='highlight'>" + word_upper_case + "</span>");
+							}
+							else if (entry[0].search(word_upper_case_first_letter) !== -1) {
+								highlighted_text = entry[0].replace(word_upper_case_first_letter, "<span class='highlight'>" + word_upper_case_first_letter + "</span>");
+							}
+							else {
+								highlighted_text = entry[0].replace(word, "<span class='highlight'>" + word + "</span>");
+							}
+							
+							document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'>" + "<tr>" + "<td class='js_dictionar_table_part1'>" + highlighted_text + "</td>" + "<td class='js_dictionar_table_part2'>" + entry[1] + "</td>" + "</tr>" + "</table>";
+							cpu_saver++;
+							at_least_one_result++;
+							if (cpu_saver >= MAX_RESULTS) {
+								count = line.length;
+							}
+						}
+					}
+				}
+				if (at_least_one_result == 0) {
+					document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'><tr><td class='js_dictionar_table_part_noresult'><i>" + no_result + "</i></td></tr></table>";
+				}
+				
+				/******************************************************/
+				/******************************************************/
 				// And then in the definition side
-				document.getElementById(output_div).innerHTML += "<br><table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + result_definition_text + " \"</b>" +  word + "<b>\"</b></th></tr></table>";				
+				document.getElementById(output_div).innerHTML += "<br><table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + in_the_definitions + "</b></th></tr></table>";				
 				
 				cpu_saver = 0;
 				at_least_one_result = 0;
@@ -199,10 +249,6 @@
 								highlighted_text = entry[1].replace(word, "<span class='highlight'>" + word + "</span>");
 							}
 							
-							
-							//highlighted_text = entry[1].replace(word, "<span class='highlight'>" + word + "</span>");
-							//highlighted_text = entry[1].replace(word_lower_case, "<span class='highlight'>" + word_lower_case + "</span>");
-							//highlighted_text = entry[1].replace(word_upper_case, "<span class='highlight'>" + word_upper_case + "</span>");
 							document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'>" + "<tr>" + "<td class='js_dictionar_table_part1'>" + entry[0] + "</td>" + "<td class='js_dictionar_table_part2'>" + highlighted_text + "</td>" + "</tr>" + "</table>";
 							cpu_saver++;
 							at_least_one_result++;
