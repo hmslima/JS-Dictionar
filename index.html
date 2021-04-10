@@ -93,9 +93,9 @@
 				var no_result = "";
 				
 				if (lang == 0) { // Sambahsa
-					precise_search = "Precise paursk:";
-					in_the_terms = "In ia terms:";
-					in_the_definitions = "In ia istilahs:";
+					precise_search = "Precis paursk:";
+					in_the_terms = "In ia lexis:";
+					in_the_definitions = "In ia definitions:";
 					no_result = "Neid resultat";
 				}
 				else if (lang == 1) { // Brazilian Portuguese
@@ -153,6 +153,11 @@
 				// Cleaning the result DIV for new searchs
 				document.getElementById(output_div).innerHTML = "";
 				
+				// To store the possible precise word
+				var char_chain = "";
+				var char_chain_original_word = "";
+				var find_precise_word = false;
+				
 				// Variable that will store the highlited definition
 				var highlighted_text = "";
 				
@@ -163,21 +168,39 @@
 				/******************************************************/
 				/******************************************************/
 				// First, the search for precise words
-				document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + precise_search + "</b></th></tr></table>";				
+				document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + precise_search + "</b></th></tr></table>";
 				
 				cpu_saver = 0;
 				at_least_one_result = 0;
 				for (var count = 0; count < line.length; count++) {
 					entry = (line[count]).split("\t");
 					if (entry[1] !== undefined && valid_input) {
-						// if (entry[0].search(word) !== -1) {
-						if (((entry[0].search(word) !== -1) || (entry[0].search(word_lower_case) !== -1) || (entry[0].search(word_upper_case) !== -1) || (entry[0].search(word_upper_case_first_letter) !== -1)) && (word.length == entry[0].length)) {
+						if ((entry[0].search(word) !== -1) || (entry[0].search(word_lower_case) !== -1) || (entry[0].search(word_upper_case) !== -1) || (entry[0].search(word_upper_case_first_letter) !== -1)) {
+							// Let's find out whether the searched word can be found alone in 
+							char_chain = (entry[0].toLowerCase()).split("");
+							char_chain_original_word = word_lower_case.split("");
 							
-							document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'>" + "<tr>" + "<td class='js_dictionar_table_part1'>" + entry[0] + "</td>" + "<td class='js_dictionar_table_part2'>" + entry[1] + "</td>" + "</tr>" + "</table>";
-							cpu_saver++;
-							at_least_one_result++;
-							if (cpu_saver >= MAX_RESULTS) {
-								count = line.length;
+							for (var c = 0; c < entry[0].length; c++)
+							{
+								if (char_chain[c] == char_chain_original_word[0]) {
+									if ((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-')) {
+										find_precise_word = true;
+										break;
+									}
+									else {
+										find_precise_word = false;
+									}
+								}
+							}
+							
+							// Now we put it in the table
+							if (find_precise_word) {
+								document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'>" + "<tr>" + "<td class='js_dictionar_table_part1'>" + entry[0] + "</td>" + "<td class='js_dictionar_table_part2'>" + entry[1] + "</td>" + "</tr>" + "</table>";
+								cpu_saver++;
+								at_least_one_result++;
+								if (cpu_saver >= MAX_RESULTS) {
+									count = line.length;
+								}
 							}
 						}
 					}
@@ -189,15 +212,32 @@
 				/******************************************************/
 				/******************************************************/
 				// Now we search in the word side
-				document.getElementById(output_div).innerHTML += "<br><table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + in_the_terms + "</b></th></tr></table>";				
+				document.getElementById(output_div).innerHTML += "<br><table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + in_the_terms + "</b></th></tr></table>";
 				
 				cpu_saver = 0;
 				at_least_one_result = 0;
 				for (var count = 0; count < line.length; count++) {
 					entry = (line[count]).split("\t");
 					if (entry[1] !== undefined && valid_input) {
-						// if (entry[0].search(word) !== -1) {
-						if (((entry[0].search(word) !== -1) || (entry[0].search(word_lower_case) !== -1) || (entry[0].search(word_upper_case) !== -1) || (entry[0].search(word_upper_case_first_letter) !== -1)) && (word.length != entry[0].length)) {
+						if ((entry[0].search(word) !== -1) || (entry[0].search(word_lower_case) !== -1) || (entry[0].search(word_upper_case) !== -1) || (entry[0].search(word_upper_case_first_letter) !== -1)) {
+							// The code just below is just to avoid repetitions
+							char_chain = (entry[0].toLowerCase()).split("");
+							char_chain_original_word = word_lower_case.split("");
+							
+							for (var c = 0; c < entry[0].length; c++)
+							{
+								if (char_chain[c] == char_chain_original_word[0]) {
+									if ((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-')) {
+										find_precise_word = true;
+										break;
+									}
+									else {
+										find_precise_word = false;
+									}
+								}
+							}
+							
+							// Let's prepare the highlighted word
 							if (entry[0].search(word_lower_case) !== -1) {
 								highlighted_text = entry[0].replace(word_lower_case, "<span class='highlight'>" + word_lower_case + "</span>");
 							}
@@ -211,11 +251,13 @@
 								highlighted_text = entry[0].replace(word, "<span class='highlight'>" + word + "</span>");
 							}
 							
-							document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'>" + "<tr>" + "<td class='js_dictionar_table_part1'>" + highlighted_text + "</td>" + "<td class='js_dictionar_table_part2'>" + entry[1] + "</td>" + "</tr>" + "</table>";
-							cpu_saver++;
-							at_least_one_result++;
-							if (cpu_saver >= MAX_RESULTS) {
-								count = line.length;
+							if (!find_precise_word) {
+								document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'>" + "<tr>" + "<td class='js_dictionar_table_part1'>" + highlighted_text + "</td>" + "<td class='js_dictionar_table_part2'>" + entry[1] + "</td>" + "</tr>" + "</table>";
+								cpu_saver++;
+								at_least_one_result++;
+								if (cpu_saver >= MAX_RESULTS) {
+									count = line.length;
+								}
 							}
 						}
 					}
@@ -234,7 +276,6 @@
 				for (var count = 0; count < line.length; count++) {
 					entry = (line[count]).split("\t");
 					if (entry[1] !== undefined && valid_input) {
-						// if (entry[0].search(word) === -1 && entry[1].search(word) !== -1) { // This "entry[0].search(word) === -1" is here to avoid repetitions from the previous loop
 						if (((entry[0].search(word) === -1) && (entry[0].search(word_lower_case) === -1) && (entry[0].search(word_upper_case) === -1) && (entry[0].search(word_upper_case_first_letter) === -1)) && ((entry[1].search(word) !== -1) || (entry[1].search(word_lower_case) !== -1) || (entry[1].search(word_upper_case) !== -1) || (entry[1].search(word_upper_case_first_letter) !== -1))) { // This "entry[0].search(word) === -1" is here to avoid repetitions from the previous loop
 							if (entry[1].search(word_lower_case) !== -1) {
 								highlighted_text = entry[1].replace(word_lower_case, "<span class='highlight'>" + word_lower_case + "</span>");
@@ -20028,7 +20069,7 @@ zygote	zygote
 </div>
 			<div id="title">English-Sambahsa Dictionary</div>
 
-			<div id="version">JS-Dictionar – v 1.03</div>
+			<div id="version">JS-Dictionar – v 1.04</div>
 
 			<br>
 
