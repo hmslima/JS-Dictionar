@@ -2,7 +2,6 @@
 <!--------------------------------- ----------------------------------->
 <!-- Author: Henrique Matheus da Silva Lima --------------------------->
 <!-- License: MIT ----------------------------------------------------->
-<!-- Version: 1.00 ---------------------------------------------------->
 <!--------------------------------- ----------------------------------->
 <!--------------------------------- ----------------------------------->
 
@@ -293,7 +292,6 @@
 								if (char_chain[c] == char_chain_original_word[0]) {
 									if (((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '“' || char_chain[c - 1] == '«' || char_chain[c - 1] == '.' || char_chain[c - 1] == ',' || char_chain[c - 1] == '¡' || char_chain[c - 1] == '¿') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c + (word.length)] == '\"' || char_chain[c + (word.length)] == '\'' || char_chain[c + (word.length)] == '”' || char_chain[c + (word.length)] == '»' || char_chain[c + (word.length)] == '.' || char_chain[c + (word.length)] == ',' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?')) && (char_chain[c + word.length - 1] == char_chain_original_word[word.length - 1])) {
 										find_precise_word = true;
-										console.log("y");
 										break;
 									}
 									else {
