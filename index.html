@@ -87,6 +87,8 @@
 				var word_upper_case = word.toUpperCase();
 				var word_upper_case_first_letter = word.charAt(0).toUpperCase() + word_lower_case.slice(1);
 				
+				word = word_lower_case;
+				
 				// The texts in different languages
 				var result_entry_text = "";
 				var result_definition_text = "";
@@ -98,7 +100,7 @@
 					in_the_definitions = "In ia definitions:";
 					no_result = "Neid resultat";
 				}
-				else if (lang == 1) { // Brazilian Portuguese
+				else if (lang == 1) { // Portuguese
 					precise_search = "Pesquisa precisa:";
 					in_the_terms = "Nos termos:";
 					in_the_definitions = "Nas definições:";
@@ -164,6 +166,7 @@
 				// Getting the lines
 				var line = list_of_words.split("\n");
 				var entry; // I will use this variable to split the lines
+				var entry_lowercase; // For search
 				
 				/******************************************************/
 				/******************************************************/
@@ -174,16 +177,17 @@
 				at_least_one_result = 0;
 				for (var count = 0; count < line.length; count++) {
 					entry = (line[count]).split("\t");
+					entry_lowercase = (line[count]).toLowerCase().split("\t");
 					if (entry[1] !== undefined && valid_input) {
-						if ((entry[0].search(word) !== -1) || (entry[0].search(word_lower_case) !== -1) || (entry[0].search(word_upper_case) !== -1) || (entry[0].search(word_upper_case_first_letter) !== -1)) {
+						if (entry_lowercase[0].search(word) !== -1) {
 							// Let's find out whether the searched word can be found alone in 
-							char_chain = (entry[0].toLowerCase()).split("");
+							char_chain = entry_lowercase[0].split("");
 							char_chain_original_word = word_lower_case.split("");
 							
 							for (var c = 0; c < entry[0].length; c++)
 							{
 								if (char_chain[c] == char_chain_original_word[0]) {
-									if ((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-')) {
+									if ((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '“' || char_chain[c - 1] == '«' || char_chain[c - 1] == '.' || char_chain[c - 1] == '¡' || char_chain[c - 1] == '¿') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '”' || char_chain[c - 1] == '»' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?')) {
 										find_precise_word = true;
 										break;
 									}
@@ -218,16 +222,17 @@
 				at_least_one_result = 0;
 				for (var count = 0; count < line.length; count++) {
 					entry = (line[count]).split("\t");
+					entry_lowercase = (line[count]).toLowerCase().split("\t");
 					if (entry[1] !== undefined && valid_input) {
-						if ((entry[0].search(word) !== -1) || (entry[0].search(word_lower_case) !== -1) || (entry[0].search(word_upper_case) !== -1) || (entry[0].search(word_upper_case_first_letter) !== -1)) {
+						if (entry_lowercase[0].search(word) !== -1) {
 							// The code just below is just to avoid repetitions
-							char_chain = (entry[0].toLowerCase()).split("");
+							char_chain = entry_lowercase[0].split("");
 							char_chain_original_word = word_lower_case.split("");
 							
 							for (var c = 0; c < entry[0].length; c++)
 							{
 								if (char_chain[c] == char_chain_original_word[0]) {
-									if ((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-')) {
+									if ((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '“' || char_chain[c - 1] == '«' || char_chain[c - 1] == '.' || char_chain[c - 1] == '¡' || char_chain[c - 1] == '¿') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '”' || char_chain[c - 1] == '»' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?')) {
 										find_precise_word = true;
 										break;
 									}
@@ -275,8 +280,9 @@
 				at_least_one_result = 0;
 				for (var count = 0; count < line.length; count++) {
 					entry = (line[count]).split("\t");
+					entry_lowercase = (line[count]).toLowerCase().split("\t");
 					if (entry[1] !== undefined && valid_input) {
-						if (((entry[0].search(word) === -1) && (entry[0].search(word_lower_case) === -1) && (entry[0].search(word_upper_case) === -1) && (entry[0].search(word_upper_case_first_letter) === -1)) && ((entry[1].search(word) !== -1) || (entry[1].search(word_lower_case) !== -1) || (entry[1].search(word_upper_case) !== -1) || (entry[1].search(word_upper_case_first_letter) !== -1))) { // This "entry[0].search(word) === -1" is here to avoid repetitions from the previous loop
+						if (entry_lowercase[0].search(word) === -1 && entry_lowercase[1].search(word) !== -1) { // This "entry_lowercase[0].search(word) === -1" is here to avoid repetitions from the previous loop
 							if (entry[1].search(word_lower_case) !== -1) {
 								highlighted_text = entry[1].replace(word_lower_case, "<span class='highlight'>" + word_lower_case + "</span>");
 							}
@@ -20069,7 +20075,7 @@ zygote	zygote
 </div>
 			<div id="title">English-Sambahsa Dictionary</div>
 
-			<div id="version">JS-Dictionar – v 1.04</div>
+			<div id="version">JS-Dictionar – v 1.05</div>
 
 			<br>
 
