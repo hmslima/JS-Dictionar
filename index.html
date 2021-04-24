@@ -187,7 +187,7 @@
 							for (var c = 0; c < entry[0].length; c++)
 							{
 								if (char_chain[c] == char_chain_original_word[0]) {
-									if ((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '“' || char_chain[c - 1] == '«' || char_chain[c - 1] == '.' || char_chain[c - 1] == '¡' || char_chain[c - 1] == '¿') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '”' || char_chain[c - 1] == '»' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?')) {
+									if (((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '“' || char_chain[c - 1] == '«' || char_chain[c - 1] == '.' || char_chain[c - 1] == ',' || char_chain[c - 1] == '¡' || char_chain[c - 1] == '¿') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c + (word.length)] == '\"' || char_chain[c + (word.length)] == '\'' || char_chain[c + (word.length)] == '”' || char_chain[c + (word.length)] == '»' || char_chain[c + (word.length)] == '.' || char_chain[c + (word.length)] == ',' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?')) && (char_chain[c + word.length - 1] == char_chain_original_word[word.length - 1])) {
 										find_precise_word = true;
 										break;
 									}
@@ -232,7 +232,7 @@
 							for (var c = 0; c < entry[0].length; c++)
 							{
 								if (char_chain[c] == char_chain_original_word[0]) {
-									if ((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '“' || char_chain[c - 1] == '«' || char_chain[c - 1] == '.' || char_chain[c - 1] == '¡' || char_chain[c - 1] == '¿') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '”' || char_chain[c - 1] == '»' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?')) {
+									if (((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '“' || char_chain[c - 1] == '«' || char_chain[c - 1] == '.' || char_chain[c - 1] == ',' || char_chain[c - 1] == '¡' || char_chain[c - 1] == '¿') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c + (word.length)] == '\"' || char_chain[c + (word.length)] == '\'' || char_chain[c + (word.length)] == '”' || char_chain[c + (word.length)] == '»' || char_chain[c + (word.length)] == '.' || char_chain[c + (word.length)] == ',' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?')) && (char_chain[c + word.length - 1] == char_chain_original_word[word.length - 1])) {
 										find_precise_word = true;
 										break;
 									}
@@ -274,33 +274,102 @@
 				/******************************************************/
 				/******************************************************/
 				// And then in the definition side
-				document.getElementById(output_div).innerHTML += "<br><table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + in_the_definitions + "</b></th></tr></table>";				
+				document.getElementById(output_div).innerHTML += "<br><table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + in_the_definitions + "</b></th></tr></table>";
 				
 				cpu_saver = 0;
 				at_least_one_result = 0;
+				
+				// We show firstly a precise search
 				for (var count = 0; count < line.length; count++) {
 					entry = (line[count]).split("\t");
 					entry_lowercase = (line[count]).toLowerCase().split("\t");
 					if (entry[1] !== undefined && valid_input) {
 						if (entry_lowercase[0].search(word) === -1 && entry_lowercase[1].search(word) !== -1) { // This "entry_lowercase[0].search(word) === -1" is here to avoid repetitions from the previous loop
-							if (entry[1].search(word_lower_case) !== -1) {
-								highlighted_text = entry[1].replace(word_lower_case, "<span class='highlight'>" + word_lower_case + "</span>");
-							}
-							else if (entry[1].search(word_upper_case) !== -1) {
-								highlighted_text = entry[1].replace(word_upper_case, "<span class='highlight'>" + word_upper_case + "</span>");
-							}
-							else if (entry[1].search(word_upper_case_first_letter) !== -1) {
-								highlighted_text = entry[1].replace(word_upper_case_first_letter, "<span class='highlight'>" + word_upper_case_first_letter + "</span>");
-							}
-							else {
-								highlighted_text = entry[1].replace(word, "<span class='highlight'>" + word + "</span>");
+							char_chain = entry_lowercase[1].split("");
+							char_chain_original_word = word_lower_case.split("");
+							
+							for (var c = 0; c < entry[1].length; c++)
+							{
+								if (char_chain[c] == char_chain_original_word[0]) {
+									if (((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '“' || char_chain[c - 1] == '«' || char_chain[c - 1] == '.' || char_chain[c - 1] == ',' || char_chain[c - 1] == '¡' || char_chain[c - 1] == '¿') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c + (word.length)] == '\"' || char_chain[c + (word.length)] == '\'' || char_chain[c + (word.length)] == '”' || char_chain[c + (word.length)] == '»' || char_chain[c + (word.length)] == '.' || char_chain[c + (word.length)] == ',' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?')) && (char_chain[c + word.length - 1] == char_chain_original_word[word.length - 1])) {
+										find_precise_word = true;
+										console.log("y");
+										break;
+									}
+									else {
+										find_precise_word = false;
+									}
+								}
 							}
 							
-							document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'>" + "<tr>" + "<td class='js_dictionar_table_part1'>" + entry[0] + "</td>" + "<td class='js_dictionar_table_part2'>" + highlighted_text + "</td>" + "</tr>" + "</table>";
-							cpu_saver++;
-							at_least_one_result++;
-							if (cpu_saver >= MAX_RESULTS) {
-								count = line.length;
+							if (find_precise_word) {
+								if (entry[1].search(word_lower_case) !== -1) {
+									highlighted_text = entry[1].replace(word_lower_case, "<span class='highlight'>" + word_lower_case + "</span>");
+								}
+								else if (entry[1].search(word_upper_case) !== -1) {
+									highlighted_text = entry[1].replace(word_upper_case, "<span class='highlight'>" + word_upper_case + "</span>");
+								}
+								else if (entry[1].search(word_upper_case_first_letter) !== -1) {
+									highlighted_text = entry[1].replace(word_upper_case_first_letter, "<span class='highlight'>" + word_upper_case_first_letter + "</span>");
+								}
+								else {
+									highlighted_text = entry[1].replace(word, "<span class='highlight'>" + word + "</span>");
+								}
+								
+								document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'>" + "<tr>" + "<td class='js_dictionar_table_part1'>" + entry[0] + "</td>" + "<td class='js_dictionar_table_part2'>" + highlighted_text + "</td>" + "</tr>" + "</table>";
+								cpu_saver++;
+								at_least_one_result++;
+								if (cpu_saver >= MAX_RESULTS) {
+									count = line.length;
+								}
+							}
+						}
+					}
+				}
+				
+				// Now we search the remaining words
+				for (var count = 0; count < line.length; count++) {
+					entry = (line[count]).split("\t");
+					entry_lowercase = (line[count]).toLowerCase().split("\t");
+					if (entry[1] !== undefined && valid_input) {
+						if (entry_lowercase[0].search(word) === -1 && entry_lowercase[1].search(word) !== -1) { // This "entry_lowercase[0].search(word) === -1" is here to avoid repetitions from the previous loop
+							
+							char_chain = entry_lowercase[1].split("");
+							char_chain_original_word = word_lower_case.split("");
+							
+							for (var c = 0; c < entry[1].length; c++)
+							{
+								if (char_chain[c] == char_chain_original_word[0]) {
+									if (((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '“' || char_chain[c - 1] == '«' || char_chain[c - 1] == '.' || char_chain[c - 1] == ',' || char_chain[c - 1] == '¡' || char_chain[c - 1] == '¿') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c + (word.length)] == '\"' || char_chain[c + (word.length)] == '\'' || char_chain[c + (word.length)] == '”' || char_chain[c + (word.length)] == '»' || char_chain[c + (word.length)] == '.' || char_chain[c + (word.length)] == ',' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?')) && (char_chain[c + word.length - 1] == char_chain_original_word[word.length - 1])) {
+										find_precise_word = true;
+										break;
+									}
+									else {
+										find_precise_word = false;
+									}
+								}
+							}
+							
+							if (!find_precise_word) {
+								if (entry[1].search(word_lower_case) !== -1) {
+									highlighted_text = entry[1].replace(word_lower_case, "<span class='highlight'>" + word_lower_case + "</span>");
+								}
+								else if (entry[1].search(word_upper_case) !== -1) {
+									highlighted_text = entry[1].replace(word_upper_case, "<span class='highlight'>" + word_upper_case + "</span>");
+								}
+								else if (entry[1].search(word_upper_case_first_letter) !== -1) {
+									highlighted_text = entry[1].replace(word_upper_case_first_letter, "<span class='highlight'>" + word_upper_case_first_letter + "</span>");
+								}
+								else {
+									highlighted_text = entry[1].replace(word, "<span class='highlight'>" + word + "</span>");
+								}
+								
+								document.getElementById(output_div).innerHTML += "<table class='js_dictionar_table'>" + "<tr>" + "<td class='js_dictionar_table_part1'>" + entry[0] + "</td>" + "<td class='js_dictionar_table_part2'>" + highlighted_text + "</td>" + "</tr>" + "</table>";
+								cpu_saver++;
+								at_least_one_result++;
+								if (cpu_saver >= MAX_RESULTS) {
+									count = line.length;
+								}
 							}
 						}
 					}
@@ -20075,7 +20144,7 @@ zygote	zygote
 </div>
 			<div id="title">English-Sambahsa Dictionary</div>
 
-			<div id="version">JS-Dictionar – v 1.05</div>
+			<div id="version">JS-Dictionar – v 1.06</div>
 
 			<br>
 
