@@ -246,6 +246,8 @@
 				var char_chain_original_word = "";
 				var find_precise_word = false;
 				
+				var word_at_the_beginning = false;
+				
 				// Variable that will store the highlited definition
 				var highlighted_text = "";
 				
@@ -466,6 +468,7 @@
 				
 				/******************************************************/
 				/******************************************************/
+				
 				// And then in the definition side
 				document.getElementById(output_div).innerHTML += "<br><table class='js_dictionar_table'><tr><th class='js_dictionar_table_part'><b>" + in_the_definitions + "</b></th></tr></table>";
 				
@@ -481,16 +484,28 @@
 							char_chain = entry_lowercase[1].split("");
 							char_chain_original_word = word_lower_case.split("");
 							
-							for (var c = 0; c < entry[1].length; c++)
-							{
-								if (char_chain[c] == char_chain_original_word[0]) {
-									if (((char_chain[c - 1] === undefined) && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c + (word.length)] == '\"' || char_chain[c + (word.length)] == '\'' || char_chain[c + (word.length)] == '”' || char_chain[c + (word.length)] == '»' || char_chain[c + (word.length)] == '.' || char_chain[c + (word.length)] == ',' || char_chain[c + (word.length)] == ';' || char_chain[c + (word.length)] == ':' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?' || char_chain[c + (word.length)] == ')' || char_chain[c + (word.length)] == '(' || char_chain[c + (word.length)] == ']' || char_chain[c + (word.length)] == '}' || char_chain[c + (word.length)] == '…')) && (char_chain[c + word.length - 1] == char_chain_original_word[word.length - 1])) {
-										find_precise_word = true;
-										break;
+							find_precise_word = false; // In case the following condition is not satisfied
+							
+							if (char_chain[0] == char_chain_original_word[0]) {
+								for (var c = 0; c < word_lower_case.length; c++)
+								{
+									if (char_chain[c] == char_chain_original_word[c]) {
+										word_at_the_beginning = true;
 									}
 									else {
-										find_precise_word = false;
+										word_at_the_beginning = false;
+										break;
 									}
+									
+									if (c == (word_lower_case.length - 1) && !(char_chain[c + 1] === undefined || char_chain[c + 1] == ' ' || char_chain[c + 1] == '-' || char_chain[c + 1] == '\"' || char_chain[c + 1] == '\'' || char_chain[c + 1] == '”' || char_chain[c + 1] == '»' || char_chain[c + 1] == '.' || char_chain[c + 1] == ',' || char_chain[c + 1] == ';' || char_chain[c + 1] == ':' || char_chain[c + 1] == '!' || char_chain[c + 1] == '?' || char_chain[c + 1] == ')' || char_chain[c + 1] == '(' || char_chain[c + 1] == ']' || char_chain[c + 1] == '}' || char_chain[c + 1] == '…')) {
+										word_at_the_beginning = false;
+									}
+								}
+								if (word_at_the_beginning) {
+									find_precise_word = true;
+								}
+								else {
+									find_precise_word = false;
 								}
 							}
 							
@@ -536,10 +551,22 @@
 							char_chain = entry_lowercase[1].split("");
 							char_chain_original_word = word_lower_case.split("");
 							
+							// This piece of code is to avoid repetitions from the previous loop
+							for (var c = 0; c < word_lower_case.length; c++)
+							{
+								if (char_chain[c] == char_chain_original_word[c]) {
+									word_at_the_beginning = true;
+								}
+								else {
+									word_at_the_beginning = false;
+								}
+							}
+							// Now we continue
+							
 							for (var c = 0; c < entry[1].length; c++)
 							{
 								if (char_chain[c] == char_chain_original_word[0]) {
-									if (((char_chain[c - 1] == ' ' || char_chain[c - 1] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '“' || char_chain[c - 1] == '«' || char_chain[c - 1] == '.' || char_chain[c - 1] == ',' || char_chain[c - 1] == ';' || char_chain[c - 1] == ':' || char_chain[c - 1] == '¡' || char_chain[c - 1] == '¿' || char_chain[c - 1] == '(' || char_chain[c - 1] == ')' || char_chain[c - 1] == '[' || char_chain[c - 1] == '{' || char_chain[c - 1] == '…') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c + (word.length)] == '\"' || char_chain[c + (word.length)] == '\'' || char_chain[c + (word.length)] == '”' || char_chain[c + (word.length)] == '»' || char_chain[c + (word.length)] == '.' || char_chain[c + (word.length)] == ',' || char_chain[c + (word.length)] == ';' || char_chain[c + (word.length)] == ':' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?' || char_chain[c + (word.length)] == ')' || char_chain[c + (word.length)] == '(' || char_chain[c + (word.length)] == ']' || char_chain[c + (word.length)] == '}' || char_chain[c + (word.length)] == '…')) && (char_chain[c + word.length - 1] == char_chain_original_word[word.length - 1])) {
+									if (word_at_the_beginning == false && ((char_chain[c - 1] == ' ' || char_chain[c - 1] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '“' || char_chain[c - 1] == '«' || char_chain[c - 1] == '.' || char_chain[c - 1] == ',' || char_chain[c - 1] == ';' || char_chain[c - 1] == ':' || char_chain[c - 1] == '¡' || char_chain[c - 1] == '¿' || char_chain[c - 1] == '(' || char_chain[c - 1] == ')' || char_chain[c - 1] == '[' || char_chain[c - 1] == '{' || char_chain[c - 1] == '…') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c + (word.length)] == '\"' || char_chain[c + (word.length)] == '\'' || char_chain[c + (word.length)] == '”' || char_chain[c + (word.length)] == '»' || char_chain[c + (word.length)] == '.' || char_chain[c + (word.length)] == ',' || char_chain[c + (word.length)] == ';' || char_chain[c + (word.length)] == ':' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?' || char_chain[c + (word.length)] == ')' || char_chain[c + (word.length)] == '(' || char_chain[c + (word.length)] == ']' || char_chain[c + (word.length)] == '}' || char_chain[c + (word.length)] == '…')) && (char_chain[c + word.length - 1] == char_chain_original_word[word.length - 1])) {
 										find_precise_word = true;
 										break;
 									}
@@ -20405,7 +20432,7 @@ zygote	zygote
 </div>
 			<div id="title">English-Sambahsa Dictionary</div>
 
-			<div id="version">JS-Dictionar – v 1.07</div>
+			<div id="version">JS-Dictionar – v 1.08</div>
 
 			<br>
 
