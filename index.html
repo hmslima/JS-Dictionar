@@ -258,6 +258,9 @@
 				var entry; // I will use this variable to split the lines
 				var entry_lowercase; // For search
 				
+				// Temporary variables
+				var temp_x = 0;
+				
 				/******************************************************/
 				/******************************************************/
 				// First, the search for precise words
@@ -572,14 +575,35 @@
 								}
 							}
 							// Now we continue
-							
 							for (var c = 0; c < entry[1].length; c++)
 							{
 								if (char_chain[c] == char_chain_original_word[0]) {
 									if (word_at_the_beginning == false && ((char_chain[c - 1] == ' ' || char_chain[c - 1] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '“' || char_chain[c - 1] == '«' || char_chain[c - 1] == '.' || char_chain[c - 1] == ',' || char_chain[c - 1] == ';' || char_chain[c - 1] == ':' || char_chain[c - 1] == '¡' || char_chain[c - 1] == '¿' || char_chain[c - 1] == '(' || char_chain[c - 1] == ')' || char_chain[c - 1] == '[' || char_chain[c - 1] == '{' || char_chain[c - 1] == '…') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c + (word.length)] == '\"' || char_chain[c + (word.length)] == '\'' || char_chain[c + (word.length)] == '”' || char_chain[c + (word.length)] == '»' || char_chain[c + (word.length)] == '.' || char_chain[c + (word.length)] == ',' || char_chain[c + (word.length)] == ';' || char_chain[c + (word.length)] == ':' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?' || char_chain[c + (word.length)] == ')' || char_chain[c + (word.length)] == '(' || char_chain[c + (word.length)] == ']' || char_chain[c + (word.length)] == '}' || char_chain[c + (word.length)] == '…')) && (char_chain[c + word.length - 1] == char_chain_original_word[word.length - 1])) {
-										find_precise_word = true;
-										position = c;
-										break;
+										if (word.length > 1) {
+											temp_x = 0;
+											for (var y = c; y < (c + word.length); y++) {
+												if (char_chain[y] != word[temp_x]) {
+													find_precise_word = false;
+													break;
+												}
+												else {
+													find_precise_word = true;
+													if (y == (c + word.length - 1)) {
+														position = c;
+														break;
+													}
+												}
+												temp_x++;
+											}
+											if (find_precise_word) {
+												break;
+											}
+										}
+										else {
+											find_precise_word = true;
+											position = c;
+											break;
+										}
 									}
 									else {
 										find_precise_word = false;
@@ -619,8 +643,31 @@
 							{
 								if (char_chain[c] == char_chain_original_word[0]) {
 									if (((char_chain[c - 1] === undefined || char_chain[c - 1] == ' ' || char_chain[c - 1] == '-' || char_chain[c - 1] == '\"' || char_chain[c - 1] == '\'' || char_chain[c - 1] == '“' || char_chain[c - 1] == '«' || char_chain[c - 1] == '.' || char_chain[c - 1] == ',' || char_chain[c - 1] == ';' || char_chain[c - 1] == ':' || char_chain[c - 1] == '¡' || char_chain[c - 1] == '¿' || char_chain[c - 1] == '(' || char_chain[c - 1] == ')' || char_chain[c - 1] == '[' || char_chain[c - 1] == '{' || char_chain[c - 1] == '…') && (char_chain[c + (word.length)] === undefined || char_chain[c + (word.length)] == ' ' || char_chain[c + (word.length)] == '-' || char_chain[c + (word.length)] == '\"' || char_chain[c + (word.length)] == '\'' || char_chain[c + (word.length)] == '”' || char_chain[c + (word.length)] == '»' || char_chain[c + (word.length)] == '.' || char_chain[c + (word.length)] == ',' || char_chain[c + (word.length)] == ';' || char_chain[c + (word.length)] == ':' || char_chain[c + (word.length)] == '!' || char_chain[c + (word.length)] == '?' || char_chain[c + (word.length)] == ')' || char_chain[c + (word.length)] == '(' || char_chain[c + (word.length)] == ']' || char_chain[c + (word.length)] == '}' || char_chain[c + (word.length)] == '…')) && (char_chain[c + word.length - 1] == char_chain_original_word[word.length - 1])) {
-										find_precise_word = true;
-										break;
+										if (word.length > 1) {
+											temp_x = 0;
+											for (var y = c; y < (c + word.length); y++) {
+												if (char_chain[y] != word[temp_x]) {
+													find_precise_word = false;
+													break;
+												}
+												else {
+													find_precise_word = true;
+													if (y == (c + word.length - 1)) {
+														position = c;
+														break;
+													}
+												}
+												temp_x++;
+											}
+											if (find_precise_word) {
+												break;
+											}
+										}
+										else {
+											find_precise_word = true;
+											position = c;
+											break;
+										}
 									}
 									else {
 										find_precise_word = false;
@@ -20428,7 +20475,7 @@ zygote	zygote
 </div>
 			<div id="title">English-Sambahsa Dictionary</div>
 
-			<div id="version">JS-Dictionar – v 1.09</div>
+			<div id="version">JS-Dictionar – v 1.10</div>
 
 			<br>
 
